@@ -38,7 +38,7 @@ func setupRouter() *gin.Engine {
 
 func TestLoginEndpoint(t *testing.T) {
 	router := setupRouter()
-	body, _ := json.Marshal(map[string]string{"email": "admin@divyapacking.com", "password": "admin123"})
+	body, _ := json.Marshal(map[string]string{"email": "admin@example.com", "password": "admin15"})
 	req, _ := http.NewRequest("POST", "/api/v1/login", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
 	resp := httptest.NewRecorder()
