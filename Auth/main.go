@@ -1,14 +1,18 @@
+//now the code is ready is ready for production 
 package main
 
 import (
 	"Auth/db"
 	"Auth/middleware"
 	"Auth/routes"
+	"Auth/utils"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis_rate/v10"
 	"github.com/joho/godotenv"
 )
 
@@ -36,10 +40,19 @@ func main() {
 	// Run DB setup tasks
 	db.CreateUserTable()
 	db.BootstrapAdmin()
-
+     
+	//redis setup 
+		utils.ConnectRedis()
+		defer func() {
+		if utils.RDB != nil {
+			_ = utils.RDB.Close()
+		}
+	}()
 	// Initialize Gin router
 	router := gin.Default()
-
+	//rate limiter setup 
+	rateLimit := redis_rate.PerMinute(10)
+	router.Use(middleware.NewRedisUserRateLimiter(utils.RDB, rateLimit))
 	// Health check endpoint
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -52,6 +65,7 @@ func main() {
 	api := router.Group("/api/v1")
 	{
 		api.POST("/login", routes.Login)
+		api.GET("/oauth", routes.Oauthlogin)
 	}
 
 	// Admin routes (protected)

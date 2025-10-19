@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -49,4 +50,7 @@ func Login(c *gin.Context) {
 		"token":   token,
 		"role":    role,
 	})
+}
+func Oauthlogin(c *gin.Context) {
+	fmt.Println("Oauth login")
 }
