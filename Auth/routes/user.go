@@ -3,8 +3,11 @@ package routes
 import (
 	"Auth/db"
 	"Auth/models"
+	"fmt"
 	"net/http"
 	"time"
+	"Auth/internal/kafka"
+	"Auth/internal/emailjob"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gocql/gocql"
@@ -47,6 +50,13 @@ func CreateUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
 	}
+	emailJob := emailjob.EmailJob{
+    To:       user.Email,
+    Subject:  "Welcome to Our Platform",
+    Body:     fmt.Sprintf("Hello %s, welcome aboard!", user.Name),
+	Type:"welcome",
+}
+    kafka.PublishEmailJob(emailJob)
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "User created successfully",
 		"id":      user.ID,

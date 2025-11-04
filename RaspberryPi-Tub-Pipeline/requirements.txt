@@ -1,0 +1,10 @@
+fastapi
+
+fastapi
+uvicorn[standard]
+kafka-python
+influxdb-client
+cassandra-driver
+pytest
+schedule
+python-dateutil

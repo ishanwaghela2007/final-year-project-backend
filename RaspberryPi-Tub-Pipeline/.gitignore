@@ -1,0 +1,65 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.pid
+
+# OS / editor configs
+.vscode/
+.idea/
+*.swp
+
+# Python specific
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Media & data files
+/media/
+*.csv
+
+# Systemd and shell scripts
+*.service
+*.sh
+
+# Docker
+docker-compose.override.yml
+*.pid
+*.sock
+.env.docker
+.env.local
+
+# Cache
+__pycache__/
+.cache/
+*.tmp
+*.bak
+
+# Ignore test artifacts
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Ignore notebooks if any
+*.ipynb_checkpoints/
+
+# Ignore compiled binaries
+*.so
+*.out
+*.o

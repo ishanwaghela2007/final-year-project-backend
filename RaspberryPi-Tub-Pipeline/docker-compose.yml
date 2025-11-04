@@ -1,0 +1,59 @@
+version: "3.8"
+services:
+  zookeeper:
+    image: bitnami/zookeeper:3.8
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: bitnami/kafka:3.6
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+
+  cassandra:
+    image: cassandra:4.1
+    environment:
+      - CASSANDRA_START_RPC=true
+    ports:
+      - "9042:9042"
+
+  influxdb:
+    image: influxdb:2.6
+    environment:
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=adminpass
+      - INFLUXDB_DB=camera_uptime
+    ports:
+      - "8086:8086"
+    volumes:
+      - influx_data:/var/lib/influxdb2
+
+  tub-app:
+    build: .
+    image: tub-pipeline:latest
+    depends_on:
+      - kafka
+      - cassandra
+      - influxdb
+    environment:
+      - KAFKA_BOOTSTRAP=kafka:9092
+      - CASSANDRA_CONTACT_POINTS=cassandra
+      - INFLUX_URL=http://influxdb:8086
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+      - "8081:8081"
+    command: ["uvicorn", "api.api_service:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+
+volumes:
+  influx_data:
