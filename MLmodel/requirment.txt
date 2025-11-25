@@ -1,0 +1,18 @@
+# training/dev
+ultralytics
+opencv-python
+pandas
+numpy
+scikit-learn
+
+# server
+fastapi
+uvicorn
+cassandra-driver
+requests
+
+# pi
+tflite-runtime
+opencv-python
+requests
+numpy
