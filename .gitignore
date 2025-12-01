@@ -1,0 +1,66 @@
+# -------------------------
+# Python & Virtual Envs
+# -------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.sqlite3
+env/
+venv/
+tube-env/
+.venv/
+
+# -------------------------
+# Logs & Outputs
+# -------------------------
+!log/.gitkeep
+*.log
+*.out
+
+# -------------------------
+# Dataset & ML Weights
+# -------------------------
+!dataset/.gitkeep
+dataset/
+*.jpg
+*.png
+*.jpeg
+*.bmp
+*.tif
+*.tiff
+*.mp4
+*.avi
+*.csv
+*.yaml
+runs/
+weights/
+*.tflite
+*.pt
+
+# -------------------------
+# IDE & OS Files
+# -------------------------
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# -------------------------
+# Docker & Build
+# -------------------------
+build/
+dist/
+*.egg-info/
+docker-compose.override.yml
+
+
+
+# -------------------------
+# Secrets
+# -------------------------
+*.key
+*.pem
+*.json
+*.env
