@@ -12,15 +12,18 @@ import (
 
 // CreateUserTable creates the users table if it doesn't exist
 func CreateTestUserTable() {
-    query := `
-  CREATE TABLE IF NOT EXISTS users (
-    email TEXT PRIMARY KEY,
-    id UUID,
-    name TEXT,
-    password TEXT,
-    role TEXT,
-    created_at TIMESTAMP
-);`
+query := `
+	CREATE TABLE IF NOT EXISTS users (
+		email TEXT PRIMARY KEY,
+		id UUID,
+		name TEXT,
+		password TEXT,
+		role TEXT,
+		isverified BOOLEAN,
+		isloggedin BOOLEAN,
+		verified_at TIMESTAMP,
+		created_at TIMESTAMP
+	);`
 
     if err := Session.Query(query).Exec(); err != nil {
         log.Fatal("❌ Error creating users table: ", err)
@@ -45,13 +48,16 @@ func BootstrapTestAdmin() {
         }
 
         insertErr := Session.Query(`
-            INSERT INTO users (id, name, email, password, role, created_at)
-            VALUES (?, ?, ?, ?, ?, ?)`,
+            INSERT INTO users (id, name, email, password, role, isverified, isloggedin, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             adminID,
             "Default Admin",
             "admin@divyapackingtest.com",
             string(hashed),
             "admin",
+            true,
+            false,
+            time.Now(),
             time.Now(),
         ).Exec()
 

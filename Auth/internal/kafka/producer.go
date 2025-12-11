@@ -59,7 +59,5 @@ func PublishEmailJob(job emailjob.EmailJob) error {
 	log.Printf("[producer] Published email job to topic email_jobs for %s", job.To)
 	return nil
 }
-
-
 // ErrProducerNotReady is returned when the producer isn't initialized
 var ErrProducerNotReady = sarama.ConfigurationError("Kafka producer not initialized")

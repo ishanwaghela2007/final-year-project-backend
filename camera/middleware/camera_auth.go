@@ -1,17 +1,16 @@
 package middleware
 
 import (
+	"camera/db"
+	"camera/utils"
 	"net/http"
 	"strings"
-
-	"Auth/db"
-	"Auth/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gocql/gocql"
 )
 
-func AuthMiddleware(requiredRole string) gin.HandlerFunc {
+func CameraAccess() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
@@ -56,15 +55,14 @@ func AuthMiddleware(requiredRole string) gin.HandlerFunc {
 			return
 		}
 
-		if requiredRole == "admin" && userRole != "admin" {
-			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied: admin only"})
+		if userRole != "admin" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Admin access required"})
 			c.Abort()
 			return
 		}
 
 		c.Set("user_id", claims["user_id"])
 		c.Set("role", role)
-		c.Set("email", email)
 		c.Next()
 	}
 }

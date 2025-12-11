@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-
+    "time"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -32,4 +32,11 @@ func ConnectRedis() {
 	}
 
 	fmt.Println("✅ Connected to Redis successfully")
+}
+
+func SaveUserRole(userID, role string) error {
+	return RDB.Set(Ctx, "userid:"+userID+":role", role, time.Hour).Err() // 1 hour TTL
+}
+func GetUserRole(userID, role string) (string, error) {
+	return RDB.Get(Ctx, "userid:"+userID+":role").Result()
 }
