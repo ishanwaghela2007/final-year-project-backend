@@ -42,6 +42,7 @@ func CreateUser(c *gin.Context) {
 
 	user.ID = gocql.TimeUUID()
 	user.CreatedAt = time.Now()
+	user.IsLoggedIn = false
 
 	// Insert new user
 	insertQuery := `INSERT INTO users (id, name, email, password, role, created_at) VALUES (?, ?, ?, ?, ?, ?)`
@@ -60,6 +61,7 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "User created successfully",
 		"id":      user.ID,
+		"email":   user.Email,
 	})
 }
 

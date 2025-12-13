@@ -53,7 +53,6 @@ func main() {
 	}
 	defer kafka.CloseProducer()
 	log.Println("✅ Kafka producer initialized")
-
 	// Start consumer (email worker)
 	go func() {
 		ctx := context.Background()
@@ -82,6 +81,13 @@ func main() {
 	{
 		api.POST("/login", routes.Login)
 		api.GET("/oauth", routes.Oauthlogin)
+	}
+
+	// Protected routes
+	protected := router.Group("/api/v0")
+	protected.Use(middleware.AuthMiddleware(""))
+	{
+		protected.POST("/logout", routes.Logout)
 	}
 
 	// Admin routes

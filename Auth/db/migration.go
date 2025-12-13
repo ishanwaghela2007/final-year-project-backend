@@ -19,6 +19,7 @@ func CreateUserTable() {
 		password TEXT,
 		role TEXT,
 		isverified BOOLEAN,
+		isloggedin BOOLEAN,
 		verified_at TIMESTAMP,
 		created_at TIMESTAMP
 	);`
@@ -46,14 +47,15 @@ func BootstrapAdmin() {
 		}
 
 		insertErr := Session.Query(`
-			INSERT INTO users (id, name, email, password, role, isverified, verified_at, created_at)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+			INSERT INTO users (id, name, email, password, role, isverified, isloggedin, verified_at, created_at)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 			adminID,
 			"Default Admin",
 			"admin@divyapacking.com",
 			string(hashed),
 			"admin",
 			true,             // ✅ Admin is verified by default
+			false,            // ✅ Admin is not logged in by default
 			time.Now(),       // ✅ Verified timestamp
 			time.Now(),
 		).Exec()
