@@ -7,13 +7,14 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func GenerateToken(userID string, role string, email string) (string, error) {
+func GenerateToken(userID string, role string, email string, name string) (string, error) {
 	secret := os.Getenv("JWT_SECRET")
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": userID,
 		"role":    role,
 		"email":   email,
+		"name":    name,
 		"exp":     time.Now().Add(24 * time.Hour).Unix(),
 	})
 

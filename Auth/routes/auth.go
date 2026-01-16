@@ -15,6 +15,7 @@ import (
 type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	Name     string `json:"name"`
 	IsLoggedIn bool `json:"isloggedin"`
 }
 
@@ -47,7 +48,7 @@ func Login(c *gin.Context) {
 	}
 
 	req.IsLoggedIn = true
-	token, err := utils.GenerateToken(id.String(), role, req.Email)
+	token, err := utils.GenerateToken(id.String(), role, req.Email, req.Name)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return

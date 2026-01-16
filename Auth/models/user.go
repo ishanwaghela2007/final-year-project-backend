@@ -13,7 +13,7 @@ type User struct {
 	Password   string     `json:"password" binding:"required"`
 	Role       string     `json:"role" binding:"required"`
 	IsVerified bool       `json:"isverified"`
-	IsLoggedIn bool       `json:"isloggedin" binding:"required"`
+	IsLoggedIn bool       `json:"isloggedin"`
 	VerifiedAt time.Time  `json:"verified_at"`
 	CreatedAt  time.Time  `json:"created_at"`
 }
